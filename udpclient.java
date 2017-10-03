@@ -7,7 +7,7 @@ import java.nio.channels.*;
 
 class udpclient{
 
-	public fileTransferClient(){}
+	public udpclient(){}
 	
 		  /*
 			Checks if valid ip
@@ -44,16 +44,16 @@ class udpclient{
 
 	public static void main(String args[]){
 		try{
-			DatagramChannel sc = DatagramChannel.open(); 
+			DatagramChannel dc = DatagramChannel.open(); 
 //changing the transport layer protocal
 Console cons = System.console();
 
-
+			udpclient uc = new udpclient();
       	    String ipStr = "127.0.0.1"; // Default ip address
       	    boolean valid = false;
       	    while(valid == false){
           		ipStr = cons.readLine("Enter target IP address: ");
-              valid = ftc.isValidIP(ipStr.trim());
+              	valid = uc.isValidIP(ipStr.trim());
           		if(!valid){
           		    System.out.println("IP address " + ipStr + " is not valid.");
           		    continue;
@@ -89,22 +89,22 @@ Console cons = System.console();
 			}
 			System.out.println("Now using port number " + portInt); //end of checking port number
 
-			Console cons = System.console();
-			String ipStr = cons.readLine("Enter an IP Address: ");
-			String portStr = cons.readLine("Enter a port number: ");
+			// Console cons = System.console();
+			// String ipStr = cons.readLine("Enter an IP Address: ");
+			// String portStr = cons.readLine("Enter a port number: ");
 			int portnum = Integer.parseInt(portStr);
 
 			Boolean again = true; 
 			while(again){
-				String filename = cons.readLine("Enter a filename to transfer: ");
+				String m = cons.readLine("Enter a filename to transfer: ");
 				if(m.equals("exit")){
 					again = false;				
 				}
 				ByteBuffer buf = ByteBuffer.wrap(m.getBytes());
-				sc.send(buf,new InetSocketAddress(ipStr,portnum)); 
+				dc.send(buf,new InetSocketAddress(ipStr,portnum)); 
 			
 				ByteBuffer buffer = ByteBuffer.allocate(4096);
-				SocketAddress clientaddr = sc.receive(buffer); //reading the socket
+				SocketAddress clientaddr = dc.receive(buffer); //reading the socket
 				String message = new String(buffer.array());  
 				//returns a socket address of whoever sent the packet
 				System.out.println(message);

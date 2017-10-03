@@ -94,6 +94,7 @@ Console cons = System.console();
 			// String portStr = cons.readLine("Enter a port number: ");
 			int portnum = Integer.parseInt(portStr);
 
+			// @TODO change this so that it doesn't just send the filename as a message, but that it accepts a file back from the server and writes it to the hard drive.
 			Boolean again = true; 
 			while(again){
 				String m = cons.readLine("Enter a filename to transfer: ");

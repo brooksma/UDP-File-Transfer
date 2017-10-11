@@ -16,23 +16,24 @@ class udpclient{
 		  public static boolean isValidIP(String ip){
 			  try{
 				  if(ip == null || ip.isEmpty()){
-				  return false;
+				  	  return false;
 				  }
 	
 				  String[] ipArr = ip.split("\\.");
+				  
 				  if( ipArr.length != 4 ){
-				  return false;
+				      return false;
 				  }
 	
 				  for(String numStr : ipArr){
-				  int num = Integer.parseInt(numStr);
-				  if(num < 0 || num > 255){
-					  return false;
-				  }
+				      int num = Integer.parseInt(numStr);
+				      if(num < 0 || num > 255){
+					      return false;
+				      }
 				  }
 	
 				  if(ip.endsWith(".")){
-				  return false;
+				      return false;
 				  }
 	
 				  return true;
@@ -45,7 +46,6 @@ class udpclient{
 	public static void main(String args[]){
 		try{
 			DatagramChannel dc = DatagramChannel.open(); 
-//changing the transport layer protocal
 			Console cons = System.console();
 
 			udpclient uc = new udpclient();
@@ -112,35 +112,45 @@ class udpclient{
 				String fileSizeStr = new String(buffer.array());
 				System.out.println(fileSizeStr);
 				
-				/*@TODO: All of the size code is commented out because I kept getting casting errors
-				 but we will need it so that the client knows when it has the whole file*/
-				
-				//Long fileSize = Long.parseLong(fileSizeStr);
-				//Long endSize = new Long(0);
-				
-				
-				
-				int currWindow = 0;
-				ByteBuffer buff = ByteBuffer.allocate(1024); //our buffer can only be 1024
-				//while(endSize < fileSize){ //loop the sliding window again until the file is read
-					currWindow=0; //start all over again with the window system
-					while(currWindow<6){
-						//@TODO knowing what packet number we just recived
+				ByteBuffer buff = ByteBuffer.allocate(1024); 
+/*				
+	below is the code for sending a packet of information
+
 						buff.flip();
 		      		    fc.write(buff);
 		      		    buff.compact();
 						dc.receive(buff);
-						//@TODO: add awknowlagements in here (can we shift the window or do we wait?)
-						currWindow++;
-						//endSize = newfile.length();
-						//int endSize = Integer.parseInt(endSize);
-					}
-				
-				//}
+*/
+
 			}
 		}catch(IOException e){
 			System.out.println("Got an IO Exception");
 			}
 		}
+		
 	}
 	
+	
+	
+	
+	class slidingWindow(){
+	
+	public static int getNumber(){
+		//will return the number of which packet it is
+	}
+	
+	
+	
+	/*
+	@TODO: for the sliding window:
+			-get packet number
+			-keep track of the last packet number we recived IN ORDER
+			-send an aknowlagement for that last packet
+			-keep all packets we recived in an array
+			-ask for missing packets
+			-fill in the spaces where the missing packets were but also utilize the ones we already have
+	*/
+	
+	
+	
+	}

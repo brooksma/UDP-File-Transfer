@@ -61,42 +61,29 @@ class udpserver{
             	ByteBuffer buffer = ByteBuffer.allocate(1024); //our buffer can only be 1024
             	SocketAddress clientaddr = c.receive(buffer); //reading in the file name b/c its the first thing being sent
             	System.out.println("A client is requesting information");
+            	
             	String fileStr = new String(buffer.array());
-            	fileStr = fileStr.trim(); // have to trim leading and trailing spaces due to making string from oversized buffer
+            	fileStr = fileStr.trim();
             	File f = new File(fileStr);
             	String filename = f.getName();
             	boolean fileExists = f.exists();
+            	
             	if(fileExists){
                 	System.out.println("File exists");
-                
-                	long filesize = f.length();
-                	String sizeStr = Long.toString(filesize);
-                	ByteBuffer sizebuffer = ByteBuffer.wrap(sizeStr.getBytes());
-                	c.send(sizebuffer,clientaddr); 
-                	//this send matches up with the clients recive so that the client has the size of the file.
                 	
                 	FileInputStream instream = new FileInputStream(f);
                 	FileChannel fc = instream.getChannel();
                 	ByteBuffer buf = ByteBuffer.allocate(1024);
                 	int bytesread = fc.read(buf);
-                	//TODO: making sure a number is being send with the packet so we know which packet to resend if need be ect.
                 	
-                	int currWindow = 0;
-                	
-                	while(bytesread != -1){
-		            	currWindow=0; //start all over again with the window system
-						while(currWindow<6){
-							//@TODO knowing what packet number we just recived
+	/*Code below is for sending a file
 							buf.flip();
 				  		    c.send(buf, clientaddr);
 				  		    buf.compact();
 							bytesread = fc.read(buf);
-							//@TODO: add awknowlagements in here (can we shift the window or do we wait? resend?)
 							currWindow++;
-							//endSize = newfile.length();
-							//int endSize = Integer.parseInt(endSize);
-						}
-                	}
+						*/
+                	
                 }
              }
         }catch(IOException e){
@@ -105,3 +92,36 @@ class udpserver{
 
     }
 }
+
+
+
+
+	class slidingWindow(){
+	
+		public static int getNumber(){
+			//will return the number of which packet it is
+		}
+		public static boolean isAknowlaged(){
+			//will return whether or not the package was aknowlaged by the client.
+		}
+	
+	
+	/*
+	@TODO: for the sliding window:
+			-send packet number with packet
+			-for simplicity just number packets 1 to 4billion (no need to wrap around and reuse numbers)
+			-only send 5 packets at a time
+			-recive aknowlagements for all packets and keep the last one that is IN ORDER 
+				for example if we get aknowlagements 1 2 4 5 then the variable last aknowlaged would be 2
+			-HAVE variable last packet recived (as decribed above)
+			-keep all packets we sent in an array (the contents of the buffers)
+			-resend missing packets
+				also off of the example above (aknowlagements for 1 2 4 5) MOVE the window by sending packets 6 and 7
+	*/
+	
+	}
+	
+	
+	
+	
+	

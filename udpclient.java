@@ -135,8 +135,17 @@ class udpclient{
 	
 	class slidingWindow(){
 	
-	public static int getNumber(){
-		//will return the number of which packet it is
+	public static int getPNum(ByteBuffer bb){
+		bb.position(bb.position() - 1024);
+    
+		byte a = bb.get();
+		byte b = bb.get();
+		byte c = bb.get();
+		byte d = bb.get();
+		
+		int num = ((0xFF & a) << 24) | ((0xFF & b) << 16) | ((0xFF & c) << 8) | (0xFF & d);
+		return num;
+		
 	}
 	
 	

@@ -98,8 +98,11 @@ class udpserver{
 
 	class slidingWindow(){
 	
-		public static int getNumber(){
-			//will return the number of which packet it is
+		public static byte[] getPNumBytes(int number){
+			//will return the number of which packet it is in 4 bytes
+			byte[] pnum = new byte[4];
+			pnum = number.toByteArray;
+			return pnum;
 		}
 		public static boolean isAknowlaged(){
 			//will return whether or not the package was aknowlaged by the client.
